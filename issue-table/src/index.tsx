@@ -92,9 +92,15 @@ export default createRuntime({
       type: "Contract",
       view: createView<
         ExtensionElementViewContext<
-          Config
+          Config,
+          { liveMatch: "pending" | "failed" | "matched" | "dependency" | "undeployed", liveMatchContract: string }
         >
       >(({ use, css }) => {
+        const [liveMatch, setLiveMatch] = use("props.liveMatch");
+        const [liveMatchContract, setLiveMatchContract] = use("props.liveMatchContract");
+        if (!liveMatch) setLiveMatch("pending");
+        if (!liveMatchContract) setLiveMatchContract("");
+
         return (
           <Components.View
             class={css`items-center justify-start p-2 m-0 my-4 rounded-2xl border-2 border-gray-200 dark:border-gray-700`}
@@ -107,6 +113,35 @@ export default createRuntime({
                   <Components.Content allowed={["paragraph"]} />
                 </Components.View>
               </Components.Element>
+
+              <Components.Element type="LiveMatch">
+                <Components.View
+                  class={css`border-b-2 p-4 border-gray-200 dark:border-gray-700`}
+                >
+                  <Components.View
+                    class={css`mr-1 text-gray-500 dark:text-gray-400 font-bold text-base h-[130px] font-mono min-w-60 items-center`}
+                  >
+
+                    <Components.Element type="LiveMatchContract">
+                      <Components.Field type="text" label="Live Match" placeholder="0x..." bind:value={liveMatchContract} />
+                    </Components.Element>
+                    <Components.Element type="LiveMatchStatus">
+                      <Components.Select
+                        bind:value={liveMatch}
+                        class="mx-0 w-full"
+                        options={[
+                          { label: "Pending", value: "pending" },
+                          { label: "Matched", value: "matched" },
+                          { label: "Failed", value: "failed" },
+                          { label: "Dependency", value: "dependency" },
+                          { label: "Not Deployed", value: "undeployed" },
+                        ]}
+                      />
+                    </Components.Element>
+                  </Components.View>
+                </Components.View>
+              </Components.Element>
+
               <Components.Element type="Description">
                 <Components.View
                   class={css`border-b-2 p-4 border-gray-200 dark:border-gray-700`}
@@ -154,8 +189,9 @@ export default createRuntime({
       view: createView<
         ExtensionElementViewContext<
           Config,
-          { severity: "informational" | "low" | "medium" | "high" | "governance",
-            resolution: "pending" | "acknowledged"| "partially" | "resolved"
+          {
+            severity: "informational" | "low" | "medium" | "high" | "governance",
+            resolution: "pending" | "acknowledged" | "partially" | "resolved"
           }
         >
       >(({ use, css }) => {
@@ -240,9 +276,9 @@ export default createRuntime({
                 >
                   <Components.View
                     class={css`mr-1 text-base h-[60px] font-mono min-w-50 flex items-start flex-col`}
-                  >  
+                  >
                     <Components.View
-                    class={css`text-gray-500 font-bold px-2 dark:text-gray-400`}>
+                      class={css`text-gray-500 font-bold px-2 dark:text-gray-400`}>
                       Resolution
                     </Components.View>
                     <Components.Element type="ResolutionState">
