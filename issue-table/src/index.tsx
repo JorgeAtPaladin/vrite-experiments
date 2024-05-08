@@ -191,7 +191,7 @@ export default createRuntime({
           Config,
           {
             severity: "informational" | "low" | "medium" | "high" | "governance",
-            resolution: "pending" | "acknowledged" | "partially" | "resolved"
+            resolution: "pending" | "acknowledged" | "partially" | "resolved" | "failed"
           }
         >
       >(({ use, css }) => {
@@ -288,7 +288,8 @@ export default createRuntime({
                           { label: "Pending", value: "pending" },
                           { label: "Acknowledged", value: "acknowledged" },
                           { label: "Partial", value: "partially" },
-                          { label: "Resolved", value: "resolved" }
+                          { label: "Resolved", value: "resolved" },
+                          { label: "Failed", value: "failed" }
                         ]}
                       />
                     </Components.Element>
