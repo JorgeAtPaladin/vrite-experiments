@@ -1,4 +1,5 @@
 {
   "svg.preview.background": "white",
-  "liveServer.settings.multiRootWorkspaceName": "vrite-experiments"
+  "liveServer.settings.multiRootWorkspaceName": "vrite-experiments",
+  "liveServer.settings.port": 5501
 }

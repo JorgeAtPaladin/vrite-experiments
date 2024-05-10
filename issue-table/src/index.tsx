@@ -4,8 +4,10 @@ import {
   ExtensionElementViewContext,
   Components,
   createView,
+  createFunction,
   createRuntime,
   createElement,
+  ExtensionContentPieceViewContext
 } from "@vrite/sdk/extensions";
 
 declare global {
@@ -303,4 +305,24 @@ export default createRuntime({
       }),
     },
   ],
+  contentPieceView: createView<
+    ExtensionContentPieceViewContext<Config>
+  >(({ config, token, extensionId, notify, use, flush }) => {
+    const contentPiece = use("contentPiece");
+
+
+    return (
+      <Components.View class="flex flex-col gap-2">
+        <Components.Button
+          color="primary"
+          class="w-full flex justify-center items-center m-0"
+          link={`https://dev.dashboard.paladinsec.co/audits/vrite/${contentPiece().id}`}
+          target="_blank"
+        >
+          <Components.Text content="Download PDF"/>
+        </Components.Button>
+      </Components.View>
+    );
+  }),
+
 });
